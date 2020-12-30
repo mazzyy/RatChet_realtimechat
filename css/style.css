@@ -718,11 +718,12 @@ body {
   }
   #frame .content .message-input .wrap .attachment {
     position: absolute;
-    right: 60px;
+    /* right: 60px; */
     z-index: 4;
+    width:2%;
     margin-top: 10px;
     font-size: 1.1em;
-    color: #435f7a;
+    /* color: #435f7a; */
     opacity: .5;
     cursor: pointer;
   }

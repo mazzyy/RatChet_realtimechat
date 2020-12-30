@@ -7,5 +7,9 @@
     },
     "require": {
         "cboden/ratchet": "^0.4.3"
+    },
+    "dependencies": {
+        "select2": "~4.0"
     }
+    
 }

@@ -44,8 +44,25 @@ class Chat implements MessageComponentInterface {
             $message=$data['msg'];
             // $date=$data['date'];
             $to_id=$data['to_user'];
-            $date=$data['date']= date("Y-m-d h:i:sa"); 
+            $date=$datacd['date']= date("Y-m-d h:i:sa"); 
+            if(isset($data['file'])){
+                $file=$data['file'];
 
+                // print_r($file.name);
+                // $file_ext=explode('.',$file['name']);
+                // $file_ext=strtolower(end( $file_ext));
+                // "<br>";
+                // $file_new_name=rand().'.'.$file_ext;
+                //     $file_new_name;
+                //     $file_new_destination='upload/'.$file_new_name;
+                //   echo  $tempdata=tmpfile($data['file']); 
+                //     if(move_uploaded_file ( $tempdata ,  $file_new_destination )){
+
+                //             echo $file_new_destination ;
+                //   echo "done"; 
+                //     }
+            }
+ 
             $sql=("INSERT INTO `messages`(`id`, `u_id`, `msg`, `date`, `to_id`, `att`) VALUES (NULL, '$u_id' , '$message','$date','$to_id',NULL)");
             // echo  $sql;   
             $sql = mysqli_query($conn, $sql);

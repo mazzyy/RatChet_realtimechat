@@ -1,18 +1,14 @@
 <?php include("db/db.php");
 session_start(); 
   $user_id = $_SESSION['u_id'];    
- $user_name = $_SESSION['u_name'];
+  $user_name = $_SESSION['u_name'];
 $authUser=("UPDATE `tbl_users` SET `login_status`=1 WHERE `u_id`=$user_id ");
 $authUser = mysqli_query($conn, $authUser);
-$friend=$_GET['user']; 
 
-$friend=("SELECT * FROM `tbl_users` WHERE `u_id` = $friend ");
 
-$friend = mysqli_query($conn, $friend);
-$friend = $friend->fetch_assoc();                                          
+                                         
 
-$firendname=$friend['u_name'];
- $friId=$friend['u_id'];
+
 
 ?>
   <?php 
@@ -41,8 +37,8 @@ function makeImageFromName($name) {
   <link rel="stylesheet" href="plugins/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- icheck bootstrap -->
-
+  <!--  bootstrap -->
+  <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
   <!-- Theme style -->
 
   <link rel="stylesheet" href="css/style.css">
@@ -161,99 +157,58 @@ Website: http://emilcarlsson.se/
 					</ul>
 				</div>
 				<div id="bottom-bar">
-					<a href="creategroup.php" id="addcontact" class="btn text-light" ><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Create Group</span> </a>
-					<!-- <button  id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> </button> -->
+					<button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Create Group</span></button>
 					<button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button>
 				</div>
 			</div>
 			<div class="content">
-				<div class="contact-profile">
-					<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-					<p><?php echo $firendname ?></p>
-					<div class="social-media">
-						<i class="fa fa-facebook" aria-hidden="true"></i>
-						<i class="fa fa-twitter" aria-hidden="true"></i>
-						<i class="fa fa-instagram" aria-hidden="true"></i>
-					</div>
-				</div>
-				<div class="messages">
-					<ul id="uname_response">
-
-					<?php 
-								$msgsql=("SELECT * FROM `messages` WHERE `u_id` = '$user_id' AND `to_id`= '$friId' OR `u_id` = '$friId' AND `to_id`= '$user_id' ");  
-								// echo  $msgsql; 
-								$msgsql = mysqli_query($conn, $msgsql);
+                <div class="text-center pb-5 p-2 h4 border text-light mt-1"style="background-color:#2c3e50;">CREATE GROUP</div>
+            <form class="pl-5 ml-5 form-horizontal" action="">
+              <?php echo '<input name="sessionUser" type="hidden" value="$user_id">'; ?>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="email">Group NAME</label>
+                            <div class="col-sm-12">
+                            <input type="text" name="groupName" class="form-control" id="groupName">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                  <label>Select Users</label>
+                                <div class="select2-purple">
+                                    <select name="groupUsers "class="w-100 h-50"  multiple="multiple" data-placeholder="Select a State" data-dropdown-css-class="select2-purple" style="width: 100%;">
+                                 
+                                    <?php      $sql=("SELECT * FROM `tbl_users` ");
+										$allUsers = mysqli_query($conn, $sql); 
 							
-								while($old = $msgsql->fetch_assoc()){
-									
-									if($user_id==$old['u_id']){
-								
-										//  echo ' <tr ><td></td><td class="bg-info" style="text-align:right; width: 50%; border-radius: 15px 5px 15px 15px;">&nbsp;<strong style="font-size: 8px">'.$old['date'].$user_name.'</strong>&nbsp;&nbsp;<br> '.$old['msg'].'&nbsp;&nbsp;</td></tr> ';
-										echo '<li class="replies"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>'. $old['msg'] . "</p></li>";   
+										if ($allUsers->num_rows > 0) 
+										{
+											while($User = $allUsers->fetch_assoc())
+											{   
+												$userid=$User['u_id'];
+												if(!($User['u_id']==$user_id))
+										{
+                                            $id=$User['u_id'];
+                                        //    echo  '<option> <li class="contact" id="alluserscontent"><a href="conversation2.php?user='.$row['u_id'].'"><div class="wrap row"><i class="fa fa-circle user-status-icon user-icon-1" title="away"></i>'.makeImageFromName($row['u_name']).'<p class="name pt-3 pl-2 text-primary">'. $row['u_name'].'</p>
+                                              echo   '<option value="'.$id .'" class="pt-1  text-light border" style="background-color:#374d63"> '.$User['u_name'].'</option>';
+										}           
+										} 
 									}
-									else{
-
-										echo '<li class="sent"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>'. $old['msg'] . "</p></li>";  
-									}
-									
-								}
-																	
-						
-						?>
-						<!-- <li class="sent">
-							<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
-							<p>How the hell am I supposed to get a jury to believe you when I am not even sure that I do?!</p>
-					    	</li>
-						<li class="replies">
-							<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-							<p>When you're backed against the wall, break the god damn thing down.</p>
-						</li>
-						<li class="replies">
-							<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-							<p>Excuses don't win championships.</p>
-						</li>
-						<li class="sent">
-							<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
-							<p>Oh yeah, did Michael Jordan tell you that?</p>
-						</li>
-						<li class="replies">
-							<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-							<p>No, I told him that.</p>
-						</li>
-						<li class="replies">
-							<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-							<p>What are your choices when someone puts a gun to your head?</p>
-						</li>
-						<li class="sent">
-							<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
-							<p>What are you talking about? You do what they say or they shoot you.</p>
-						</li>
-						<li class="replies">
-							<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-							<p>Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>
-						</li> -->
-					</ul>
-				</div>
-				<div class="message-input">
-					<div class="wrap">
-							
-							<input type="text" placeholder="Write your message..." />  
-							
-								<div class="file btn btn-lg btn-light " style="width:2%;   position: relative;overflow: hidden;">
-											<i  class="fa fa-paperclip text-dark pr-5"></i> 
-											<input  type="file" name="file"  id="fileatth" style="position: absolute; opacity: 0;right: 0;top: 0; width:5%" />
-								</div>
 					
-						
-									<button id="send" class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
-							</div>
-						</div>
-						<?php   echo '<input type="hidden" name="userId" id="userId" value="'.$user_id.'">'; ?>
-							<?php   echo '<input type="hidden" name="username" id="username" value="'.$user_name.'">'; ?>
-							<?php   echo '<input type="hidden" name="to_user" id="to_user" value="'.$friend['u_id'].'">'; ?>
+
 				
-				</div>
-		</div>
+						         ?>
+                                    </select>
+                                </div>
+                        </div>
+                      
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-default">Submit</button>
+                            </div>
+                        </div>
+            </form>
+
+
+            </div>
     </div> 
 </div>
 <!-- modal alert -->
@@ -498,4 +453,5 @@ $('#modal').on('shown.bs.modal', function () {
 
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="plugins/jquery/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.16/js/bootstrap-multiselect.min.js" integrity="sha512-ljeReA8Eplz6P7m1hwWa+XdPmhawNmo9I0/qyZANCCFvZ845anQE+35TuZl9+velym0TKanM2DXVLxSJLLpQWw==" crossorigin="anonymous"></script>
 <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->

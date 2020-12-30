@@ -71,10 +71,6 @@ Website: http://emilcarlsson.se/
 
 -->
 
-<?php  include("inc/header.php");  
-
-
- ?> 
 
 <div id="frame">
 	<div id="sidepanel">
