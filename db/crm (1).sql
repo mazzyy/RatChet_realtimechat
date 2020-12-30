@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 30, 2020 at 11:44 AM
+-- Generation Time: Dec 30, 2020 at 07:40 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.0
 
@@ -352,6 +352,73 @@ CREATE TABLE `emp_details` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `group_chat`
+--
+
+CREATE TABLE `group_chat` (
+  `id` int(11) NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `created_by` varchar(100) DEFAULT NULL,
+  `created_by_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `group_chat`
+--
+
+INSERT INTO `group_chat` (`id`, `name`, `created_by`, `created_by_id`) VALUES
+(1, 'TeamX', 'mazzyy', 29),
+(3, 'OSS', 'hatim', 2),
+(4, 'IT', 'mazzyy', 29),
+(5, 'XYZ', 'mazzyy', 29),
+(6, 'OneStop Solution', 'mazzyy', 29),
+(7, 'IIT', 'mazzyy', 29),
+(8, 'TeamX', 'mazzyy', 29),
+(9, 'OSS', 'mazzyy', 29),
+(10, 'Bubble', 'mazzyy', 29),
+(11, 'DAY', 'mazzyy', 29),
+(12, 'OneStopSolution', 'mazzyy', 29),
+(13, 'TTi', 'mazzyy', 29);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `group_messages`
+--
+
+CREATE TABLE `group_messages` (
+  `id` int(11) NOT NULL,
+  `g_id` int(11) NOT NULL,
+  `u_id` int(11) NOT NULL,
+  `msg` text NOT NULL,
+  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `group_messages`
+--
+
+INSERT INTO `group_messages` (`id`, `g_id`, `u_id`, `msg`, `date`) VALUES
+(1, 1, 33, 'HI ALL', '2020-12-30 18:13:20'),
+(2, 1, 33, 'HI ALL', '2020-12-30 18:13:20'),
+(3, 3, 1, 'HI ALL', '2020-12-30 18:13:20'),
+(4, 3, 36, 'HI ALL', '2020-12-30 18:13:20'),
+(5, 1, 30, 'han bro', '2020-12-30 18:13:20'),
+(6, 5, 29, 'humm', '2020-12-30 18:13:20'),
+(7, 5, 1, 'yoo', '2020-12-30 18:13:20'),
+(8, 3, 1, 'lol', '2020-12-30 18:13:20'),
+(9, 1, 29, 'xasd', '2020-12-30 18:20:08'),
+(10, 3, 29, 'j', '2020-12-30 18:20:38'),
+(11, 3, 29, 'asdasdas', '2020-12-30 18:34:28'),
+(12, 3, 29, 'asdasdasd', '2020-12-30 18:34:30'),
+(13, 3, 29, 'fasdasdasdas', '2020-12-30 18:34:32'),
+(14, 3, 29, 'asasdsaaaaaaaaadasd', '2020-12-30 18:34:38'),
+(15, 3, 29, '', '2020-12-30 18:34:58'),
+(16, 5, 29, 'hun', '2020-12-30 18:36:29');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `lead`
 --
 
@@ -620,7 +687,36 @@ INSERT INTO `messages` (`id`, `u_id`, `msg`, `date`, `to_id`, `att`) VALUES
 (270, 29, '', '2020-12-29 00:43:31', 33, NULL),
 (271, 29, '', '2020-12-29 00:48:38', 33, NULL),
 (272, 29, '1', '2020-12-29 01:04:12', 30, NULL),
-(273, 29, 'hi', '2020-12-29 01:04:16', 30, NULL);
+(273, 29, 'hi', '2020-12-29 01:04:16', 30, NULL),
+(274, 29, 'hi', '2020-12-30 01:26:14', 0, NULL),
+(275, 29, '1', '2020-12-30 01:30:21', 1, NULL),
+(276, 29, 'bro', '2020-12-30 01:30:32', 1, NULL),
+(277, 29, 'bro', '2020-12-30 01:31:23', 3, NULL),
+(278, 29, 'h1', '2020-12-30 01:34:53', 3, NULL),
+(279, 29, 'asdas', '2020-12-30 01:37:09', 0, NULL),
+(280, 29, 'xx', '2020-12-30 01:38:05', 0, NULL),
+(281, 29, ':D', '2020-12-30 01:39:09', 0, NULL),
+(282, 29, ':D', '2020-12-30 01:39:16', 0, NULL),
+(283, 29, 'sun', '2020-12-30 01:39:34', 0, NULL),
+(284, 29, 'asdas', '2020-12-30 01:39:37', 0, NULL),
+(285, 29, '123', '2020-12-30 01:40:02', 0, NULL),
+(286, 29, 'adda', '2020-12-30 01:41:28', 0, NULL),
+(287, 29, 'yo', '2020-12-30 01:42:06', 3, NULL),
+(288, 29, 'han', '2020-12-30 01:42:15', 3, NULL),
+(289, 29, 'lol', '2020-12-30 01:47:31', 3, NULL),
+(290, 29, 'testing 123', '2020-12-30 01:47:58', 0, NULL),
+(291, 29, '123', '2020-12-30 01:49:56', 1, NULL),
+(292, 29, 'dasdas', '2020-12-30 01:50:12', 0, NULL),
+(293, 29, 'asd', '2020-12-30 01:50:33', 0, NULL),
+(294, 29, 'user', '2020-12-30 02:02:37', 0, NULL),
+(295, 29, 'x', '2020-12-30 02:04:24', 0, NULL),
+(296, 29, 'x', '2020-12-30 02:05:10', 33, NULL),
+(297, 29, 'groupxasdas', '2020-12-30 02:05:34', 0, NULL),
+(298, 29, 'asd', '2020-12-30 02:05:59', 1, NULL),
+(299, 29, 'sun', '2020-12-30 02:06:07', 1, NULL),
+(300, 29, 'sun', '2020-12-30 02:06:12', 32, NULL),
+(301, 29, 'asd', '2020-12-30 02:07:14', 32, NULL),
+(302, 29, 'hi', '2020-12-30 02:07:46', 32, NULL);
 
 -- --------------------------------------------------------
 
@@ -1087,6 +1183,20 @@ ALTER TABLE `emp_details`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `group_chat`
+--
+ALTER TABLE `group_chat`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `group_messages`
+--
+ALTER TABLE `group_messages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `g_id` (`g_id`),
+  ADD KEY `group_messages_ibfk_2` (`u_id`);
+
+--
 -- Indexes for table `lead`
 --
 ALTER TABLE `lead`
@@ -1257,6 +1367,18 @@ ALTER TABLE `emp_details`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `group_chat`
+--
+ALTER TABLE `group_chat`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `group_messages`
+--
+ALTER TABLE `group_messages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
 -- AUTO_INCREMENT for table `lead`
 --
 ALTER TABLE `lead`
@@ -1296,7 +1418,7 @@ ALTER TABLE `leave_remarks`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=274;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=303;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -1386,6 +1508,13 @@ ALTER TABLE `attendace`
 ALTER TABLE `employess`
   ADD CONSTRAINT `employess_ibfk_2` FOREIGN KEY (`Dep_id`) REFERENCES `tbl_department` (`dep_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `employess_ibfk_3` FOREIGN KEY (`des_id`) REFERENCES `tbl_designation` (`des_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `group_messages`
+--
+ALTER TABLE `group_messages`
+  ADD CONSTRAINT `group_messages_ibfk_1` FOREIGN KEY (`g_id`) REFERENCES `group_chat` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `group_messages_ibfk_2` FOREIGN KEY (`u_id`) REFERENCES `tbl_users` (`u_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `public_chat`
