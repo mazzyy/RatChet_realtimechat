@@ -4,15 +4,7 @@ session_start();
  $user_name = $_SESSION['u_name'];
 $authUser=("UPDATE `tbl_users` SET `login_status`=1 WHERE `u_id`=$user_id ");
 $authUser = mysqli_query($conn, $authUser);
-$friend=$_GET['user']; 
 
-$friend=("SELECT * FROM `tbl_users` WHERE `u_id` = $friend ");
-
-$friend = mysqli_query($conn, $friend);
-$friend = $friend->fetch_assoc();                                          
-
-$firendname=$friend['u_name'];
- $friId=$friend['u_id'];
 
 ?>
   <?php 
@@ -28,7 +20,7 @@ function makeImageFromName($name) {
         
     }
 
-    $userImage = '<div  id="profile-img" style=" font-size: 20px;" class=" online  pt-2 name-image bg-primary">'.ucwords( $shortName).'</div>';
+    $userImage = '<div  id="profile-img" style=" font-size: 20px;" class=" online  pt-2 name-image bg-info">'.ucwords( $shortName).'</div>';
     return $userImage;
 } 
 
@@ -124,44 +116,39 @@ Website: http://emilcarlsson.se/
 						<a class="text-light" href="index.php"> <i class="fas fa-user"></i> Users</a> 
 					</div>
 					<div class="col-6 text-center p-2 bg-dark"> 
-						<a  class=" text-light"  href="group.php"> <i class="fas fa-users"></i> Group
+						<a  class=" text-light"  href=""> <i class="fas fa-users"></i> Group
 					</div>
 					</a> 
 				</span>
 				<div id="contacts">
 
 					<ul>
-					<?php      $sql=("SELECT * FROM `tbl_users` ");
+					<?php      $sql=("SELECT * FROM `group_chat` ");
 										$allUsers = mysqli_query($conn, $sql); 
 							
 										if ($allUsers->num_rows > 0) 
 										{
-											while($User = $allUsers->fetch_assoc())
+											while($group = $allUsers->fetch_assoc())
 											{   
-												$userid=$User['u_id'];
-												if(!($User['u_id']==$user_id))
-											{
+												$groupId=$group['id'];
+											
 											
 					echo	'<li class="contact" id="alluserscontent">';
-					echo "<a href='conversation2.php?user=$userid'>";  
+					echo "<a href='groupchat.php?group=$groupId'>";  
 					// $_SESSION['varname']=$userid;
 					echo		'<div class="wrap row">';
-					if($User['login_status']==0){
-						echo       '<i class="fa fa-circle user-status-icon user-icon-'.$userid. '"title="away"></i>';
-					}
-					else{
-					echo       '<i class="fa fa-circle user-status-icon text-info user-icon-'.$userid. '"title="away"></i>';
-					}
+				
+				
 					// echo			'<span class="contact-status online"></span>';
-					echo			makeImageFromName($User['u_name']); 
+					echo			makeImageFromName($group['name']); 
 				
 				
 					// echo 				'<p class="preview">You just got LITT up, Mike.</p>';
 				
-					echo				'<p class="name pt-3 pl-2">'. $User['u_name'].'</p>';
+					echo				'<p class="name pt-3 pl-2">'. $group['name'].'</p>';
 					echo		'</div>';
 					echo	'</a></li>';   
-											}           
+											          
 										} 
 									}
 					
@@ -176,94 +163,7 @@ Website: http://emilcarlsson.se/
 					<button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button>
 				</div>
 			</div>
-			<div class="content">
-				<div class="contact-profile">
-					<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-					<p><?php echo $firendname ?></p>
-					<div class="social-media">
-						<i class="fa fa-facebook" aria-hidden="true"></i>
-						<i class="fa fa-twitter" aria-hidden="true"></i>
-						<i class="fa fa-instagram" aria-hidden="true"></i>
-					</div>
-				</div>
-				<div class="messages">
-					<ul id="uname_response">
-
-					<?php 
-								$msgsql=("SELECT * FROM `messages` WHERE `u_id` = '$user_id' AND `to_id`= '$friId' OR `u_id` = '$friId' AND `to_id`= '$user_id' ");  
-								// echo  $msgsql; 
-								$msgsql = mysqli_query($conn, $msgsql);
-							
-								while($old = $msgsql->fetch_assoc()){
-									
-									if($user_id==$old['u_id']){
-								
-										//  echo ' <tr ><td></td><td class="bg-info" style="text-align:right; width: 50%; border-radius: 15px 5px 15px 15px;">&nbsp;<strong style="font-size: 8px">'.$old['date'].$user_name.'</strong>&nbsp;&nbsp;<br> '.$old['msg'].'&nbsp;&nbsp;</td></tr> ';
-										echo '<li class="replies"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>'. $old['msg'] . "</p></li>";   
-									}
-									else{
-
-										echo '<li class="sent"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>'. $old['msg'] . "</p></li>";  
-									}
-									
-								}
-																	
-						
-						?>
-						<!-- <li class="sent">
-							<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
-							<p>How the hell am I supposed to get a jury to believe you when I am not even sure that I do?!</p>
-					    	</li>
-						<li class="replies">
-							<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-							<p>When you're backed against the wall, break the god damn thing down.</p>
-						</li>
-						<li class="replies">
-							<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-							<p>Excuses don't win championships.</p>
-						</li>
-						<li class="sent">
-							<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
-							<p>Oh yeah, did Michael Jordan tell you that?</p>
-						</li>
-						<li class="replies">
-							<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-							<p>No, I told him that.</p>
-						</li>
-						<li class="replies">
-							<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-							<p>What are your choices when someone puts a gun to your head?</p>
-						</li>
-						<li class="sent">
-							<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
-							<p>What are you talking about? You do what they say or they shoot you.</p>
-						</li>
-						<li class="replies">
-							<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-							<p>Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>
-						</li> -->
-					</ul>
-				</div>
-				<div class="message-input">
-					<div class="wrap">
-							
-							<input type="text" placeholder="Write your message..." />  
-							
-								<div class="file btn btn-lg btn-light " style="width:2%;   position: relative;overflow: hidden;">
-											<i  class="fa fa-paperclip text-dark pr-5"></i> 
-											<input  type="file" name="file"  id="fileatth" style="position: absolute; opacity: 0;right: 0;top: 0; width:5%" />
-								</div>
-					
-						
-									<button id="send" class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
-							</div>
-						</div>
-						<?php   echo '<input type="hidden" name="userId" id="userId" value="'.$user_id.'">'; ?>
-							<?php   echo '<input type="hidden" name="username" id="username" value="'.$user_name.'">'; ?>
-							<?php   echo '<input type="hidden" name="to_user" id="to_user" value="'.$friend['u_id'].'">'; ?>
-				
-				</div>
-		</div>
+		<div class="content" ></div>
     </div> 
 </div>
 <!-- modal alert -->
@@ -387,8 +287,7 @@ $('.submit').click(function() {
            from:username,
            userId:userId,
            to_user:to_user,
-		   msg:message,
-		   to_group:"",
+           msg:message,
 		   date:"",
 		   file:file
 		  
@@ -418,13 +317,13 @@ $(window).on('keydown', function(e) {
     
    console.log(userId);
        
-       var to_user=$("#to_user").val();
+       var to_group=$("#to_user").val();
      console.log(to_user);
 
        var data = {
            from:username,
            userId:userId,
-           to_user:to_user,
+           to_group:to_group,
            msg:message,
 		   date:""
        };

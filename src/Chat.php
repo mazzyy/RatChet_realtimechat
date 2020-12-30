@@ -43,30 +43,46 @@ class Chat implements MessageComponentInterface {
             $u_id=$data['userId'];
             $message=$data['msg'];
             // $date=$data['date'];
-            $to_id=$data['to_user'];
+            $to_userid=$data['to_user'];
+            $to_groupid=$data['to_group'];
             $date=$datacd['date']= date("Y-m-d h:i:sa"); 
-            if(isset($data['file'])){
-                $file=$data['file'];
+            // if(isset($data['file'])){
+            //     $file=$data['file'];
 
-                // print_r($file.name);
-                // $file_ext=explode('.',$file['name']);
-                // $file_ext=strtolower(end( $file_ext));
-                // "<br>";
-                // $file_new_name=rand().'.'.$file_ext;
-                //     $file_new_name;
-                //     $file_new_destination='upload/'.$file_new_name;
-                //   echo  $tempdata=tmpfile($data['file']); 
-                //     if(move_uploaded_file ( $tempdata ,  $file_new_destination )){
+            //     print_r($file.name);
+            //     $file_ext=explode('.',$file['name']);
+            //     $file_ext=strtolower(end( $file_ext));
+            //     "<br>";
+            //     $file_new_name=rand().'.'.$file_ext;
+            //         $file_new_name;
+            //         $file_new_destination='upload/'.$file_new_name;
+            //       echo  $tempdata=tmpfile($data['file']); 
+            //         if(move_uploaded_file ( $tempdata ,  $file_new_destination )){
 
-                //             echo $file_new_destination ;
-                //   echo "done"; 
-                //     }
-            }
+            //                 echo $file_new_destination ;
+            //       echo "done"; 
+            //         }
+            // }
+               if(!empty($to_userid)){
+
+
+                $sql=("INSERT INTO `messages`(`id`, `u_id`, `msg`, `date`, `to_id`, `att`) VALUES (NULL, '$u_id' , '$message','$date','$to_userid',NULL)");
+                // echo  $sql;   
+                $sql = mysqli_query($conn, $sql);
+                    echo "user success";
+
+
+               }
+               else {
+                
+                $sql=(" INSERT INTO `group_messages`(`id`, `g_id`, `u_id`, `msg`, `date`) VALUES (NULL, '$to_groupid' , '$u_id','$message',NULL)");
+                echo  $sql;   
+                $sql = mysqli_query($conn, $sql);
+                    echo "group success";
+
+                }
  
-            $sql=("INSERT INTO `messages`(`id`, `u_id`, `msg`, `date`, `to_id`, `att`) VALUES (NULL, '$u_id' , '$message','$date','$to_id',NULL)");
-            // echo  $sql;   
-            $sql = mysqli_query($conn, $sql);
-                echo "success";
+         
           
         foreach ($this->clients as $client) {
                         

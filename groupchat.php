@@ -4,15 +4,17 @@ session_start();
  $user_name = $_SESSION['u_name'];
 $authUser=("UPDATE `tbl_users` SET `login_status`=1 WHERE `u_id`=$user_id ");
 $authUser = mysqli_query($conn, $authUser);
-$friend=$_GET['user']; 
+$groupIdCurrent=$_GET['group'];
+// $msgsql=("SELECT * FROM `group_messages` INNER JOIN group_chat ON group_messages.g_id = group_chat.id WHERE `g_id`= $groupIdCurrent=");
+$friend=("SELECT * FROM `group_chat` WHERE `id`= $groupIdCurrent ");
 
-$friend=("SELECT * FROM `tbl_users` WHERE `u_id` = $friend ");
 
-$friend = mysqli_query($conn, $friend);
-$friend = $friend->fetch_assoc();                                          
+$friends = mysqli_query($conn, $friend);
 
-$firendname=$friend['u_name'];
- $friId=$friend['u_id'];
+$friend = $friends->fetch_assoc();                                          
+
+$firendname=$friend['name'];
+ $friId=$friend['id'];
 
 ?>
   <?php 
@@ -86,7 +88,7 @@ Website: http://emilcarlsson.se/
 
 	<div class="col-12 " style="padding-left:10%"> 
 		<div id="frame"  >
-			<div id="sidepanel">
+        <div id="sidepanel">
 				<div id="profile">
 					<div class="wrap">
 					<!-- $user_name -->
@@ -124,44 +126,39 @@ Website: http://emilcarlsson.se/
 						<a class="text-light" href="index.php"> <i class="fas fa-user"></i> Users</a> 
 					</div>
 					<div class="col-6 text-center p-2 bg-dark"> 
-						<a  class=" text-light"  href="group.php"> <i class="fas fa-users"></i> Group
+						<a  class=" text-light"  href=""> <i class="fas fa-users"></i> Group
 					</div>
 					</a> 
 				</span>
 				<div id="contacts">
 
 					<ul>
-					<?php      $sql=("SELECT * FROM `tbl_users` ");
+					<?php      $sql=("SELECT * FROM `group_chat` ");
 										$allUsers = mysqli_query($conn, $sql); 
 							
 										if ($allUsers->num_rows > 0) 
 										{
-											while($User = $allUsers->fetch_assoc())
+											while($group = $allUsers->fetch_assoc())
 											{   
-												$userid=$User['u_id'];
-												if(!($User['u_id']==$user_id))
-											{
+												$groupId=$group['id'];
+											
 											
 					echo	'<li class="contact" id="alluserscontent">';
-					echo "<a href='conversation2.php?user=$userid'>";  
+					echo "<a href='groupchat.php?group=$groupId'>";  
 					// $_SESSION['varname']=$userid;
 					echo		'<div class="wrap row">';
-					if($User['login_status']==0){
-						echo       '<i class="fa fa-circle user-status-icon user-icon-'.$userid. '"title="away"></i>';
-					}
-					else{
-					echo       '<i class="fa fa-circle user-status-icon text-info user-icon-'.$userid. '"title="away"></i>';
-					}
+				
+				
 					// echo			'<span class="contact-status online"></span>';
-					echo			makeImageFromName($User['u_name']); 
+					echo			makeImageFromName($group['name']); 
 				
 				
 					// echo 				'<p class="preview">You just got LITT up, Mike.</p>';
 				
-					echo				'<p class="name pt-3 pl-2">'. $User['u_name'].'</p>';
+					echo				'<p class="name pt-3 pl-2">'. $group['name'].'</p>';
 					echo		'</div>';
 					echo	'</a></li>';   
-											}           
+											          
 										} 
 									}
 					
@@ -189,9 +186,10 @@ Website: http://emilcarlsson.se/
 				<div class="messages">
 					<ul id="uname_response">
 
-					<?php 
-								$msgsql=("SELECT * FROM `messages` WHERE `u_id` = '$user_id' AND `to_id`= '$friId' OR `u_id` = '$friId' AND `to_id`= '$user_id' ");  
-								// echo  $msgsql; 
+                    <?php  
+                             $msgsql=("SELECT * FROM `group_messages` INNER JOIN group_chat ON group_messages.g_id = group_chat.id WHERE `g_id`= $groupIdCurrent");
+								
+								
 								$msgsql = mysqli_query($conn, $msgsql);
 							
 								while($old = $msgsql->fetch_assoc()){
@@ -260,7 +258,7 @@ Website: http://emilcarlsson.se/
 						</div>
 						<?php   echo '<input type="hidden" name="userId" id="userId" value="'.$user_id.'">'; ?>
 							<?php   echo '<input type="hidden" name="username" id="username" value="'.$user_name.'">'; ?>
-							<?php   echo '<input type="hidden" name="to_user" id="to_user" value="'.$friend['u_id'].'">'; ?>
+							<?php   echo '<input type="hidden" name="to_user" id="to_user" value="'.$friend['id'].'">'; ?>
 				
 				</div>
 		</div>
@@ -380,15 +378,15 @@ $('.submit').click(function() {
     
    console.log(userId);
        
-       var to_user=$("#to_user").val();
+       var to_group=$("#to_user").val();
      console.log(to_user);
 
        var data = {
            from:username,
            userId:userId,
-           to_user:to_user,
-		   msg:message,
-		   to_group:"",
+           to_group:to_group,
+           to_user:"",
+           msg:message,
 		   date:"",
 		   file:file
 		  
@@ -418,13 +416,13 @@ $(window).on('keydown', function(e) {
     
    console.log(userId);
        
-       var to_user=$("#to_user").val();
+       var to_group=$("#to_user").val();
      console.log(to_user);
 
        var data = {
            from:username,
            userId:userId,
-           to_user:to_user,
+           to_group:to_group,
            msg:message,
 		   date:""
        };

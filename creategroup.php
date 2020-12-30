@@ -43,6 +43,9 @@ function makeImageFromName($name) {
 
   <link rel="stylesheet" href="css/style.css">
 
+<!-- select2 -->
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 <!DOCTYPE html><html class=''>
 <head>
 <!-- <script src='//production-assets.codepen.io/assets/editor/live/console_runner-079c09a0e3b9ff743e39ee2d5637b9216b3545af0de366d4b9aad9dc87e26bfd.js'></script><script src='//production-assets.codepen.io/assets/editor/live/events_runner-73716630c22bbc8cff4bd0f07b135f00a0bdc5d14629260c3ec49e5606f98fdd.js'></script><script src='//production-assets.codepen.io/assets/editor/live/css_live_reload_init-2c0dc5167d60a5af3ee189d570b1835129687ea2a61bee3513dee3a50c115a77.js'></script><meta charset='UTF-8'><meta name="robots" content="noindex"><link rel="shortcut icon" type="image/x-icon" href="//production-assets.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico" /><link rel="mask-icon" type="" href="//production-assets.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111" /><link rel="canonical" href="https://codepen.io/emilcarlsson/pen/ZOQZaV?limit=all&page=74&q=contact+" /> -->
@@ -51,21 +54,21 @@ function makeImageFromName($name) {
 <!-- <script src="https://use.typekit.net/hoy3lrg.js"></script> -->
 <script>try{Typekit.load({ async: true });}catch(e){}</script>
 	
+	
 <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'><link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
-</head><body>
-<!-- 
+</head>
 
-A concept for a chat interface. 
+<style>
+.select2-selection__choice{
+background-color:#007bff !important;
 
-Try writing a new message! :)
+};
+</style>
 
 
-Follow me here:
-Twitter: https://twitter.com/thatguyemil
-Codepen: https://codepen.io/emilcarlsson/
-Website: http://emilcarlsson.se/
 
--->
+<body>
+
 
 <div class="container-fluid">
 	<div class="row">
@@ -162,54 +165,54 @@ Website: http://emilcarlsson.se/
 				</div>
 			</div>
 			<div class="content">
-                <div class="text-center pb-5 p-2 h4 border text-light mt-1"style="background-color:#2c3e50;">CREATE GROUP</div>
-            <form class="pl-5 ml-5 form-horizontal" action="">
-              <?php echo '<input name="sessionUser" type="hidden" value="$user_id">'; ?>
-                        <div class="form-group">
-                            <label class="control-label col-sm-3" for="email">Group NAME</label>
-                            <div class="col-sm-12">
-                            <input type="text" name="groupName" class="form-control" id="groupName">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                  <label>Select Users</label>
-                                <div class="select2-purple">
-                                    <select name="groupUsers "class="w-100 h-50"  multiple="multiple" data-placeholder="Select a State" data-dropdown-css-class="select2-purple" style="width: 100%;">
-                                 
-                                    <?php      $sql=("SELECT * FROM `tbl_users` ");
-										$allUsers = mysqli_query($conn, $sql); 
-							
-										if ($allUsers->num_rows > 0) 
-										{
-											while($User = $allUsers->fetch_assoc())
-											{   
-												$userid=$User['u_id'];
-												if(!($User['u_id']==$user_id))
-										{
-                                            $id=$User['u_id'];
-                                        //    echo  '<option> <li class="contact" id="alluserscontent"><a href="conversation2.php?user='.$row['u_id'].'"><div class="wrap row"><i class="fa fa-circle user-status-icon user-icon-1" title="away"></i>'.makeImageFromName($row['u_name']).'<p class="name pt-3 pl-2 text-primary">'. $row['u_name'].'</p>
-                                              echo   '<option value="'.$id .'" class="pt-1  text-light border" style="background-color:#374d63"> '.$User['u_name'].'</option>';
-										}           
-										} 
-									}
-					
+                <div class="text-center pb-5 p-2 h4 border text-light mt-1"style="background-color:#6d849a;">CREATE GROUP</div>
+							<form class="pl-5 ml-5 form-horizontal" action="" method="post" >
+									<?php echo '<input name="sessionUser" type="hidden" value="$user_id">'; ?>
+												<div class="form-group">
+													<label class="control-label col-sm-3" for="email">Group NAME</label>
+													<div class="col-12">
+														<input type="text" name="groupName" class="form-control" id="groupName">
+													</div>
+												</div>
+													
+										<div class="col-12 form-group">
+												<label>Group Members</label>
+													<select  class=" js-example-basic-multiple" name="states[]" class="select2" multiple="multiple" data-placeholder="Select a State" style="width: 100%;">
+															<?php      $sql=("SELECT * FROM `tbl_users` ");
+																		$allUsers = mysqli_query($conn, $sql); 
+															
+																		if ($allUsers->num_rows > 0) 
+																		{
+																			while($User = $allUsers->fetch_assoc())
+																			{   
+																				$userid=$User['u_id'];
+																				if(!($User['u_id']==$user_id))
+																		{
+																			$id=$User['u_id'];
+																		//    echo  '<option > <li class="contact" id="alluserscontent"><a href="conversation2.php?user='.$row['u_id'].'"><div class="wrap row"><i class="fa fa-circle user-status-icon user-icon-1" title="away"></i>'.makeImageFromName($row['u_name']).'<p class="name pt-3 pl-2 text-primary">'. $row['u_name'].'</p>
+																			echo   '<option value="'.$id .'" class="pt-1  text-light border" > '.$User['u_name'].'</option>';
+																		}           
+																		} 
+																	}
+													
 
-				
-						         ?>
-                                    </select>
-                                </div>
-                        </div>
-                      
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-default">Submit</button>
-                            </div>
-                        </div>
-            </form>
+												
+																?>
+													</select>
+										</div>	
+
+																					
+												<div class="form-group">
+													<div class="col-sm-offset-2 col-sm-10">
+													<button type="submit" class="btn btn-default">Submit</button>
+													</div>
+												</div>
+									   	
+							</form>
 
 
-            </div>
-    </div> 
+          	  	</div>
+    		</div> 
 </div>
 <!-- modal alert -->
 <div class="modal" id="modal-secondary">
@@ -236,222 +239,25 @@ Website: http://emilcarlsson.se/
 
 				
 
-<script src='//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script><script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
+
+		
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
 
-<script >
-$(document).ready(function(){
+<script type="text/javascript">
 
-var conn = new WebSocket('ws://192.168.0.209:8080?token=<?php echo !empty($_SESSION['user']['token']) ? $_SESSION['user']['token'] : ''; ?>');   
-conn.onopen = function(e) {
-    
-    console.log("Connection established!");
-};
-
-conn.onmessage = function(e) {
-    console.log(e.data);
-var data =JSON.parse(e.data);
-var row =   ' <tr><td class="bg-success" style="text-align:left; width: 50%; border-radius: 0px 15px 15px 20px;">&nbsp;&nbsp;<strong style="font-size: 8px">'+data.from+"-"+data.date+'</strong> <br>'+data.msg+'</td><td><td></tr>';
-console.log(row);
-
-$('<li class="sent"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>' + data.msg + '</p></li>').appendTo($('.messages ul'));
-	$('.message-input input').val(null);
-	$('.contact.active .preview').html('<span>You: </span>' + data.msg);
-	$(".messages").scrollTop(1000);
-
-// var row=  '<tr class="row pt-3"><div class="float-info"><div class="bg-dark" style="border-radius: 15px;  font-size: 8px;"><td><strong>'+data.from+'</strong> '+data.date+'<br></div><span class="bg-light" style="border-radius: 15px 50px 30px">'+data.msg+'</td></span></div></tr';
- $('#messages ul').append(row);
-}
-
-
-
-$(".messages").scrollTop(1000);
-
-
-$("#profile-img").click(function() {
-	$("#status-options").toggleClass("active");
+$(document).ready(function() {
+    $('.js-example-basic-multiple').select2();
 });
-
-$(".expand-button").click(function() {
-  $("#profile").toggleClass("expanded");
-	$("#contacts").toggleClass("expanded");
-});
-
-$("#status-options ul li").click(function() {
-	$("#profile-img").removeClass();
-	$("#status-online").removeClass("active");
-	$("#status-away").removeClass("active");
-	$("#status-busy").removeClass("active");
-	$("#status-offline").removeClass("active");
-	$(this).addClass("active");
-	
-	if($("#status-online").hasClass("active")) {
-		$("#profile-img").addClass("online");
-	} else if ($("#status-away").hasClass("active")) {
-		$("#profile-img").addClass("away");
-	} else if ($("#status-busy").hasClass("active")) {
-		$("#profile-img").addClass("busy");
-	} else if ($("#status-offline").hasClass("active")) {
-		$("#profile-img").addClass("offline");
-	} else {
-		$("#profile-img").removeClass();
-	};
-	
-	$("#status-options").removeClass("active");
-});
-
-function newMessage() {
-	message = $(".message-input input").val();
-	if($.trim(message) == '') {
-		return false;
-	}
-	$('<li class="replies"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>' + message + '</p></li>').appendTo($('.messages ul'));
-	$('.message-input input').val(null);
-	$('.contact.active .preview').html('<span>You: </span>' + message);
-	$(".messages").scrollTop(1000);
-
-};
-
-$('.submit').click(function() {
-        message = $(".message-input input").val();
-		//file
-		file = $("#fileatth").val();
-		// file = $("#fileatth").prop('files')[0];
-		// var file =JSON.parse(file);
-		console.log(file);
-    //    var msg=$("#msg").val();
-       var username=$("#username").val();
-       var userId=$("#userId").val();
-    
-   console.log(userId);
-       
-       var to_user=$("#to_user").val();
-     console.log(to_user);
-
-       var data = {
-           from:username,
-           userId:userId,
-           to_user:to_user,
-           msg:message,
-		   date:"",
-		   file:file
-		  
-       };
-     
-       console.log(  conn.send(JSON.stringify(data)));
-   
-       var row=  ' <tr ><td></td><td class="bg-info" style="text-align:right; width: 50%; border-radius: 15px 5px 15px 15px;">&nbsp;<strong style="font-size: 8px">'+data.from+'</strong>&nbsp;&nbsp;<br> '+data.msg+'&nbsp;&nbsp;</td></tr> ';
- $('#messages ul').append(row);
-     
-
-
-       newMessage();
-
-
-});
-
-
-
-$(window).on('keydown', function(e) {
-  if (e.which == 13) {
-
-	message = $(".message-input input").val();
-    //    var msg=$("#msg").val();
-       var username=$("#username").val();
-       var userId=$("#userId").val();
-    
-   console.log(userId);
-       
-       var to_user=$("#to_user").val();
-     console.log(to_user);
-
-       var data = {
-           from:username,
-           userId:userId,
-           to_user:to_user,
-           msg:message,
-		   date:""
-       };
-	
-  console.log(  conn.send(JSON.stringify(data)));	
-	newMessage();
-
-
-    return false;
-  }
-});
-
-})
-//# sourceURL=pen.js
 </script>
 
-
-<script type="text/javascript" >
-
-$(document).ready(function(){
-
-
-// $('.submit').click(function() {
-
-// });
-
-
-$(".submit").click(function(){
-
-     
-})
-
-});
-
-$('#modal').on('shown.bs.modal', function () {
-  $('#myInput').trigger('focus')
-})
-
-
-</script>
-
-
-
-<script>
-            $(document).ready(function(){
-
-                $("#searchuser").keyup(function(){
-
-                    // var form_data = $(this).val().trim();
-					var form_data = $(this).serialize();
-			    // console.log(username);
-                    if(form_data != ''){
-            
-                       
-            
-                        $.ajax({
-                            url: 'validate_ajax.php',
-                            type: 'post',
-                            data: form_data,
-                            success: function(data){
-                // alert(data);
-                                $('#searchusersbox').html(data);
-                                 console.log(data);
-                             }
-                        });
-                    }
-                    else {
-                        //   alert("error");
-                        $("#uname_response").html("not");
-                    }
-            
-                });
-
-            });
-        </script>
 </body></html>
 
   <script src="dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
-<script src="plugins/js/bootstrap.min.js"></script>
 
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="plugins/jquery/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.16/js/bootstrap-multiselect.min.js" integrity="sha512-ljeReA8Eplz6P7m1hwWa+XdPmhawNmo9I0/qyZANCCFvZ845anQE+35TuZl9+velym0TKanM2DXVLxSJLLpQWw==" crossorigin="anonymous"></script>
 <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+
