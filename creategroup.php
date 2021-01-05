@@ -20,11 +20,12 @@ function makeImageFromName($name) {
     $names = explode(" ", $name);
 
     foreach ($names as $w) {
-        $shortName .= $w[0];
+		$shortName .= $w[0];
+		
         
     }
 
-    $userImage = '<div  id="profile-img" style=" font-size: 20px;" class=" online  pt-2 name-image bg-primary">'.ucwords( $shortName).'</div>';
+    $userImage = '<div  id="profile-img" style=" font-size: 20px;" class=" online  pt-2 name-image bg-info">'.ucwords( $shortName).'</div>';
     return $userImage;
 } 
 
@@ -61,15 +62,53 @@ function makeImageFromName($name) {
 <style>
 .select2-selection__choice{
 background-color:#007bff !important;
+border: 1px solid #007bff !important;
 
 };
+
+#select2-selection{
+
+padding:30% !important;
+
+} 
 </style>
 
 
 
 <body>
 
+<?php 
+if(isset($_POST['states'])){
+$registeredUsers=$_POST['states'];
+// echo $registeredUsers;
+$groupName=$_POST['groupName'];
 
+$sql= "INSERT INTO `group_chat`(`id`, `name`, `created_by`, `created_by_id`) VALUES (NULL,'$groupName','$user_name','$user_id')";
+mysqli_query($conn, $sql);
+ 
+$selectGroup="SELECT * FROM `group_chat` WHERE `name` = '$groupName' and `created_by_id` = $user_id";
+$selectGroup =mysqli_query($conn, $selectGroup);
+
+$numrow = $selectGroup->fetch_row();
+$groupId = $numrow[0];
+ 
+foreach($registeredUsers as $user){
+
+
+$groupMemberAdd= "INSERT INTO `chat_member`(`id`, `g_id`, `u_id`) VALUES (Null,'$groupId','$user;')";
+mysqli_query($conn, $groupMemberAdd);
+ 
+
+}
+
+echo  '<script type="text/javascript">
+window.location.href = "groupchat.php?group='.$groupId.'";
+
+</script>';
+
+}
+
+?>
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-12 bg-light " >
@@ -171,13 +210,14 @@ background-color:#007bff !important;
 												<div class="form-group">
 													<label class="control-label col-sm-3" for="email">Group NAME</label>
 													<div class="col-12">
-														<input type="text" name="groupName" class="form-control" id="groupName">
+														<input type="text" name="groupName" class="form-control" id="groupName" >
+												<?php	echo '<input type="hidden" name="creadedBy" class="form-control" id="creadedBy" value="'.$user_name.'"' ?>;
 													</div>
 												</div>
 													
 										<div class="col-12 form-group">
 												<label>Group Members</label>
-													<select  class=" js-example-basic-multiple" name="states[]" class="select2" multiple="multiple" data-placeholder="Select a State" style="width: 100%;">
+													<select  class=" js-example-basic-multiple" name="states[]" class="select2" multiple="multiple" data-placeholder="Select a State" style="width: 100%; padding:20%;">
 															<?php      $sql=("SELECT * FROM `tbl_users` ");
 																		$allUsers = mysqli_query($conn, $sql); 
 															

@@ -30,7 +30,7 @@ function makeImageFromName($name) {
         
     }
 
-    $userImage = '<div  id="profile-img" style=" font-size: 20px;" class=" online  pt-2 name-image bg-primary">'.ucwords( $shortName).'</div>';
+    $userImage = '<div  id="profile-img" style=" font-size: 20px;" class=" online  pt-2 name-image bg-info">'.ucwords( $shortName).'</div>';
     return $userImage;
 } 
 
@@ -51,28 +51,49 @@ function makeImageFromName($name) {
 
 <!DOCTYPE html><html class=''>
 <head>
-<!-- <script src='//production-assets.codepen.io/assets/editor/live/console_runner-079c09a0e3b9ff743e39ee2d5637b9216b3545af0de366d4b9aad9dc87e26bfd.js'></script><script src='//production-assets.codepen.io/assets/editor/live/events_runner-73716630c22bbc8cff4bd0f07b135f00a0bdc5d14629260c3ec49e5606f98fdd.js'></script><script src='//production-assets.codepen.io/assets/editor/live/css_live_reload_init-2c0dc5167d60a5af3ee189d570b1835129687ea2a61bee3513dee3a50c115a77.js'></script><meta charset='UTF-8'><meta name="robots" content="noindex"><link rel="shortcut icon" type="image/x-icon" href="//production-assets.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico" /><link rel="mask-icon" type="" href="//production-assets.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111" /><link rel="canonical" href="https://codepen.io/emilcarlsson/pen/ZOQZaV?limit=all&page=74&q=contact+" /> -->
-<!-- <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300' rel='stylesheet' type='text/css'> -->
-
-<!-- <script src="https://use.typekit.net/hoy3lrg.js"></script> -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 <script>try{Typekit.load({ async: true });}catch(e){}</script>
 	
 <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'><link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
-</head><body>
-<!-- 
+</head>
+<style>
+.select2-selection__choice{
+background-color:#007bff !important;
+border: 1px solid #007bff !important;
 
-A concept for a chat interface. 
+};
 
-Try writing a new message! :)
+#select2-selection{
 
+padding:30% !important;
 
-Follow me here:
-Twitter: https://twitter.com/thatguyemil
-Codepen: https://codepen.io/emilcarlsson/
-Website: http://emilcarlsson.se/
+} 
+</style>
+<body>
 
--->
+<?php
 
+if(isset($_POST['states'])){
+		$registeredUsers=$_POST['states'];
+		// echo $registeredUsers;
+	
+
+		
+		$selectGroup="SELECT * FROM `group_chat` WHERE `created_by_id` = $user_id";
+		$selectGroup =mysqli_query($conn, $selectGroup);
+		
+		$numrow = $selectGroup->fetch_row();
+		$groupId = $numrow[0];
+		
+		foreach($registeredUsers as $user){
+		
+		
+		$groupMemberAdd= "INSERT INTO `chat_member`(`id`, `g_id`, `u_id`) VALUES (Null,'$groupId','$user;')";
+		mysqli_query($conn, $groupMemberAdd);
+		
+		}
+}
+?>
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-12 bg-light " >
@@ -102,6 +123,7 @@ Website: http://emilcarlsson.se/
 								<li id="status-away"><span class="status-circle"></span> <p>Away</p></li>
 								<li id="status-busy"><span class="status-circle"></span> <p>Busy</p></li>
 								<li id="status-offline"><span class="status-circle"></span> <p>Offline</p></li>
+								
 							</ul>
 						</div>
 						<div id="expanded">
@@ -178,9 +200,11 @@ Website: http://emilcarlsson.se/
 					<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
 					<p><?php echo $firendname ?></p>
 					<div class="social-media">
-						<i class="fa fa-facebook" aria-hidden="true"></i>
+						<!-- <i class="fa fa-facebook" aria-hidden="true"></i>
 						<i class="fa fa-twitter" aria-hidden="true"></i>
-						<i class="fa fa-instagram" aria-hidden="true"></i>
+						<i class="fa fa-instagram" aria-hidden="true"></i> -->
+						<button type="button" class=" p-0 m-0  btn btn-link btn-lg" data-toggle="modal" data-target="#myModal"><i class=" text-dark p-0 m-0 fas fa-users-cog"></i></button>
+
 					</div>
 				</div>
 				<div class="messages">
@@ -265,27 +289,126 @@ Website: http://emilcarlsson.se/
     </div> 
 </div>
 <!-- modal alert -->
-<div class="modal" id="modal-secondary">
-        <div class="modal-dialog">
-          <div class="modal-content bg-secondary">
-            <div class="modal-header">
-              <h4 class="modal-title">Secondary Modal</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <p>One fine body&hellip;</p>
-            </div>
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-outline-light">Save changes</button>
-            </div>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
+<div id="myModal" class="modal fade" role="dialog">
+   <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+       <?php echo '<h3 class="modal-title" id="exampleModalLabel">'.$firendname.'</h3>'; ?>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
+      <div class="modal-body">
+
+
+<div class="container">
+  
+  <ul class="nav nav-tabs ">
+    <li class="active 	border-right "><a data-toggle="tab" href="#home">PARTICIPANTS</a></li>
+    <li><a class="pl-3 	border-right " data-toggle="tab" href="#menu1">ADD USER</a></li>
+    <li><a class="pl-3  border-right " data-toggle="tab" href="#menu2">Menu 2</a></li>
+    <li><a class="pl-3  border-right " data-toggle="tab" href="#menu3">Menu 3</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div id="home" class="tab-pane fade in active">
+	<h3>-------------------</h3>
+	  <?php      $sql=("SELECT * FROM `chat_member` INNER JOIN tbl_users ON chat_member.u_id=tbl_users.u_id WHERE `g_id`= $groupIdCurrent ");
+										$allUsers = mysqli_query($conn, $sql); 
+							
+										if ($allUsers->num_rows > 0) 
+										{
+											while($User = $allUsers->fetch_assoc())
+											{   
+												$userid=$User['u_id'];
+												if(!($User['u_id']==$user_id))
+											{
+					
+							echo   '<div class="wrap row border-bottom p-1"  >';					
+							echo	   	  '<li class="contact" id="alluserscontent" style="list-style-type: none;">';
+							echo				'<div class="wrap row  p-1">';
+							echo 				'<button style="" class="btn btn-link text-danger btn-sm"><i class="fas fa-user-slash"></i></button>';
+						    echo       			 '<i class="  user-status-icon user-icon-'.$userid. '"title="away" style="list-style-type: none;"></i>';
+							echo				 '<a class=" pl-2 " href="conversation2.php?user='.$userid.'">'.makeImageFromName($User['u_name']).'</a>'; 
+							echo		    	 '<p class="name pt-3 pl-2" >'. $User['u_name'].'</p>';
+		
+							echo     	  '</li>';
+							echo   '</div>';
+							
+                     
+											}           
+										} 
+									}
+					
+
+				
+						?>    
+    </div>
+
+    <div id="menu1" class="tab-pane fade">
+      
+	  <form class="pl-1 ml-1 form-horizontal" action="" method="post" >
+								
+													
+										<div class="form-group pt-3">
+												<label>Add Users</label>
+													<select  class=" js-example-basic-multiple" name="states[]" class="select2" multiple="multiple" data-placeholder="Select a State" style="width: 100%; padding:20%;">
+															<?php      $sql=("SELECT * FROM `tbl_users` ");
+																		$allUsers = mysqli_query($conn, $sql); 
+															
+																		if ($allUsers->num_rows > 0) 
+																		{
+																			while($User = $allUsers->fetch_assoc())
+																			{   
+																				$userid=$User['u_id'];
+																				if(!($User['u_id']==$user_id))
+																		{
+																			$id=$User['u_id'];
+																		//    echo  '<option > <li class="contact" id="alluserscontent"><a href="conversation2.php?user='.$row['u_id'].'"><div class="wrap row"><i class="fa fa-circle user-status-icon user-icon-1" title="away"></i>'.makeImageFromName($row['u_name']).'<p class="name pt-3 pl-2 text-primary">'. $row['u_name'].'</p>
+																			echo   '<option value="'.$id .'" class="pt-1  text-light border" > '.$User['u_name'].'</option>';
+																		}           
+																		} 
+																	}
+													
+
+												
+																?>
+													</select>
+												<?php	echo '<input type="hidden" name="group" value="'.$groupIdCurrent.'"'; ?>
+												
+										</div>	
+
+																					
+												<div class="form-group">
+													<div class="col-sm-offset-2 ">
+													<button type="submit" class="btn btn-default">Submit</button>
+													</div>
+												</div>
+									   	
+							</form>
+    </div>
+
+    <div id="menu2" class="tab-pane fade">
+      <h3>Menu 2</h3>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+    </div>
+
+    <div id="menu3" class="tab-pane fade">
+      <h3>Menu 3</h3>
+      <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+    </div>
+  </div>
+</div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+	  
 
 				
 
@@ -439,6 +562,12 @@ $(window).on('keydown', function(e) {
 //# sourceURL=pen.js
 </script>
 
+<script type="text/javascript">
+
+$(document).ready(function() {
+    $('.js-example-basic-multiple').select2();
+});
+</script>
 
 <script type="text/javascript" >
 
@@ -499,7 +628,11 @@ $('#modal').on('shown.bs.modal', function () {
             });
         </script>
 </body></html>
-
+<script>
+$('#myModal').on('shown.bs.modal', function () {
+  $('#myInput').trigger('focus')
+})
+</script>
   <script src="dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
@@ -507,4 +640,5 @@ $('#modal').on('shown.bs.modal', function () {
 
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="plugins/jquery/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
